@@ -34,7 +34,7 @@ namespace BeFriendServer.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL("Server=127.0.0.1;Port=3309;Database=befrienddb;uid=root;pwd=1234;");
+                optionsBuilder.UseMySQL("Server=127.0.0.1;Port=3309;Database=befrienddb;uid=root;pwd=2307200209;");
             }
         }
 

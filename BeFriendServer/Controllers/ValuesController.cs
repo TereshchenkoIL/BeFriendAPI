@@ -21,7 +21,7 @@ namespace BeFriendServer.Controllers
             _context = context;
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetTodoItem(long id)
+        public async Task<ActionResult<User>> GetTodoItem(string id)
         {
             var todoItem = await _context.Users.FindAsync(id);
 
