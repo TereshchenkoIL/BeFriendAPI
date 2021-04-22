@@ -36,6 +36,7 @@ namespace BeFriendServer
 
                 // options.UseMySQL(Configuration.GetConnectionString("DenisConnection"));
             });
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddMvc().AddNewtonsoftJson(s =>
                  s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
              );
