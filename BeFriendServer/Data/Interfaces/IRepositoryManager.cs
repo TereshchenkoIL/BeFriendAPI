@@ -6,7 +6,7 @@ using BeFriendServer.Data.Interfaces;
 
 namespace BeFriendServer.Data
 {
-    interface IRepositoryManager
+    public interface IRepositoryManager
     {
         IChatRepository Chats { get; }
         IEventRepository Events { get; }
