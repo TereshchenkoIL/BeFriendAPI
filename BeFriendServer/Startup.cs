@@ -32,7 +32,7 @@ namespace BeFriendServer
             services.AddDbContext<befrienddbContext>(options =>
             {
                 // Сюди підставляєте свою строку підключення
-                options.UseMySQL(Configuration.GetConnectionString("IlliaConnection"));
+                options.UseMySQL(Configuration.GetConnectionString("DennisConnection"));
 
                 // options.UseMySQL(Configuration.GetConnectionString("DenisConnection"));
             });
