@@ -16,5 +16,6 @@ namespace BeFriendServer.DTOs.Event
         public string Photo { get; set; }
         public string EventDate { get; set; }
         public int PeopleCount { get; set; }
+        public List<Models.Interest> Interests { get; set; }
     }
 }

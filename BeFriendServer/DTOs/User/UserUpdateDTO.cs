@@ -20,5 +20,6 @@ namespace BeFriendServer.DTOs.User
         public string Email { get; set; }
         public int? CommunicationsCount { get; set; }
         public byte IsAdmin { get; set; }
+        public List<Models.Interest> Interests { get; set; }
     }
 }
