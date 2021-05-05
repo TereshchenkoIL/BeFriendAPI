@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BeFriendServer.Models;
 
 namespace BeFriendServer.DTOs.User
 {
@@ -19,5 +20,6 @@ namespace BeFriendServer.DTOs.User
         public string Email { get; set; }
         public int? CommunicationsCount { get; set; }
 
+        public List<Models.Interest> Interests { get; set; }
     }
 }

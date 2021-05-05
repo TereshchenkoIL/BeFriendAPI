@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BeFriendServer.DTOs.Event
 {
-    public class EvrntReadDTO
+    public class EventReadDTO
     {
         public int EventId { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,6 @@ namespace BeFriendServer.DTOs.Event
         public string Photo { get; set; }
         public string EventDate { get; set; }
         public int PeopleCount { get; set; }
+        public List<Models.Interest> Interests { get; set; }
     }
 }

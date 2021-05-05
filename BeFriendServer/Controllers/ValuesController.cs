@@ -4,6 +4,7 @@ using BeFriendServer.DTOs.User;
 using BeFriendServer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace BeFriendServer.Controllers
     {
         private readonly IRepositoryManager _repo;
 
+
         public ValuesController(IRepositoryManager repo)
         {
             _repo = repo;
@@ -26,7 +28,7 @@ namespace BeFriendServer.Controllers
         public async Task<ActionResult<User>> GetTodoItem(string id)
         {
             UserRepository user = (UserRepository)_repo.Users;
-            User todoItem = user.FindByCondition(x => x.TelephoneNumber == id, false).FirstOrDefault();
+            User todoItem = user.FindByCondition(x => x.TelephoneNumber == id, false).Include(x=>x.InterestsUsers).FirstOrDefault();
             if (todoItem == null)
             {
                 return NotFound();
