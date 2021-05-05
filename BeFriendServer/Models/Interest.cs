@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+
 
 #nullable disable
 
@@ -16,7 +18,9 @@ namespace BeFriendServer.Models
         public int InterestId { get; set; }
         public string Name { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<InterestsEvent> InterestsEvents { get; set; }
+        [JsonIgnore]
         public virtual ICollection<InterestsUser> InterestsUsers { get; set; }
     }
 }

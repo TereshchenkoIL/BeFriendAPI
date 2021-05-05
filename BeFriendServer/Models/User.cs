@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -27,11 +28,17 @@ namespace BeFriendServer.Models
         public int? CommunicationsCount { get; set; }
         public byte IsAdmin { get; set; }
 
+        [JsonIgnore]
         public virtual Message Message { get; set; }
+        [JsonIgnore]
         public virtual Notification Notification { get; set; }
+        [JsonIgnore]
         public virtual Organizer Organizer { get; set; }
+        [JsonIgnore]
         public virtual Payment Payment { get; set; }
+        [JsonIgnore]
         public virtual ICollection<InterestsUser> InterestsUsers { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Participant> Participants { get; set; }
     }
 }

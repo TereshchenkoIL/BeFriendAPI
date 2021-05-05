@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -13,6 +14,7 @@ namespace BeFriendServer.Models
         public string TelephoneNumber { get; set; }
         public string Image { get; set; }
 
+        [JsonIgnore]
         public virtual User TelephoneNumberNavigation { get; set; }
     }
 }
