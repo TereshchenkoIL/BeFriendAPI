@@ -14,5 +14,30 @@ namespace BeFriendServer.Data
         {
 
         }
+
+        public void CreateNotification(Notification notification)
+        {
+            Create(notification);
+        }
+
+        public void DeleteNotification(Notification notification)
+        {
+            Delete(notification);
+        }
+
+        public List<Notification> GetAll(bool tracked = false)
+        {
+            return FindAll(tracked).ToList();
+        }
+
+        public Notification GetById(int id, bool tracked = false)
+        {
+            return FindByCondition(x => x.NotificationsId == id, tracked).FirstOrDefault();
+        }
+
+        public void UpdateNotification(Notification notification)
+        {
+            Update(notification);
+        }
     }
 }

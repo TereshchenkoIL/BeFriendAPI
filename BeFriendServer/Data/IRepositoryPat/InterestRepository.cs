@@ -14,5 +14,30 @@ namespace BeFriendServer.Data
         {
 
         }
+
+        public void CreateInterest(Interest interest)
+        {
+            Create(interest);
+        }
+
+        public void DeleteInterest(Interest interest)
+        {
+            Delete(interest);
+        }
+
+        public List<Interest> GetAll(bool tracked = true)
+        {
+            return FindAll(tracked).ToList();
+        }
+
+        public Interest GetById(int id, bool tracked = true)
+        {
+            return FindByCondition(x => x.InterestId == id, tracked).FirstOrDefault();
+        }
+
+        public void UpdateInterest(Interest interest)
+        {
+            Update(interest);
+        }
     }
 }

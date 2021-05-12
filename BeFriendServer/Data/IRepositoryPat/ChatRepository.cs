@@ -14,5 +14,30 @@ namespace BeFriendServer.Data
         {
 
         }
+
+        public void CreateChat(Chat chat)
+        {
+            Create(chat);
+        }
+
+        public void DeleteChat(Chat chat)
+        {
+            Delete(chat);
+        }
+
+        public List<Chat> GetAll(bool tracked = false)
+        {
+            return FindAll(tracked).ToList();
+        }
+
+        public Chat GetChatById(int id, bool tracked = false)
+        {
+            return FindByCondition(x => x.ChatId == id, tracked).FirstOrDefault();
+        }
+
+        public void UpdateChate(Chat chat)
+        {
+            Update(chat);
+        }
     }
 }
