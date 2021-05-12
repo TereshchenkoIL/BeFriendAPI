@@ -30,7 +30,7 @@ namespace BeFriendServer.Controllers
         public ActionResult<UserReadDTO> GetUserByNumber(string num)
         {
             var _userRepo = _repositoryManager.Users;
-            User user = _userRepo.FindByCondition(x => x.TelephoneNumber.Equals(num),false).Include(x=>x.InterestsUsers).ThenInclude(x=>x.Interest).FirstOrDefault();
+            User user = _userRepo.GetByNumber(num);
 
             if (user != null)
             {
@@ -44,7 +44,7 @@ namespace BeFriendServer.Controllers
         public ActionResult<UserReadDTO> GetAllUsers()
         {
             var _userRepo = _repositoryManager.Users;
-           List<User> users = _userRepo.FindAll(false).Include(x => x.InterestsUsers).ThenInclude(x => x.Interest).ToList();
+           List<User> users = _userRepo.GetAllUsers();
 
             if (users != null)
             {
@@ -60,8 +60,8 @@ namespace BeFriendServer.Controllers
         public ActionResult PartialUserUpdate(string num, JsonPatchDocument<UserUpdateDTO> patchDoc)
         {
             var _repo = _repositoryManager.Users;
-           
-            var userModelFromRepo = _repositoryManager.Users.FindByCondition(x=>x.TelephoneNumber.Equals(num), true).Include(x=> x.InterestsUsers).FirstOrDefault();
+
+            var userModelFromRepo = _repositoryManager.Users.GetByNumber(num, true) ;
 
             if (userModelFromRepo == null) return NotFound();
 
@@ -79,7 +79,7 @@ namespace BeFriendServer.Controllers
                 userModelFromRepo.InterestsUsers.Add(new InterestsUser { InterestId = interest.InterestId, TelephoneNumber = num, Interest = interest });
             }
 
-            _repo.Update(userModelFromRepo);
+            _repo.UpdateUser(userModelFromRepo);
             _repositoryManager.Save();
             return NoContent();
         }

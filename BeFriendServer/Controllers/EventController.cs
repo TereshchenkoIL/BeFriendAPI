@@ -31,7 +31,7 @@ namespace BeFriendServer.Controllers
         public ActionResult<EventReadDTO> GetEventById(int id)
         {
             var _eventRepo = _repositoryManager.Events;
-            Event item = _eventRepo.FindByCondition(x => x.EventId == id, false).Include(x => x.InterestsEvents).ThenInclude(x => x.Interest).FirstOrDefault();
+            Event item = _eventRepo.GetById(id);
 
             if (item != null)
             {
@@ -45,7 +45,7 @@ namespace BeFriendServer.Controllers
         public ActionResult<EventReadDTO> GetAllEvents()
         {
             var _eventRepo = _repositoryManager.Events;
-            List<Event> items = _eventRepo.FindAll(false).Include(x => x.InterestsEvents).ThenInclude(x => x.Interest).ToList();
+            List<Event> items = _eventRepo.GetAll();
 
             if (items != null)
             {
