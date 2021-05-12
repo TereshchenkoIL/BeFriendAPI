@@ -16,21 +16,21 @@ namespace BeFriendServer.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
         public EventController(IRepositoryManager manager, IMapper mapper)
         {
-            _repositoryManager = manager;
+            _repository = manager;
             _mapper = mapper;
         }
 
 
-
+        // GET api/event/{id}
         [HttpGet("{id}", Name = "GetEventById")]
         public ActionResult<EventReadDTO> GetEventById(int id)
         {
-            var _eventRepo = _repositoryManager.Events;
+            var _eventRepo = _repository.Events;
             Event item = _eventRepo.GetById(id);
 
             if (item != null)
@@ -41,10 +41,11 @@ namespace BeFriendServer.Controllers
                 return NotFound();
         }
 
+        // GET api/event
         [HttpGet("all", Name = "GetAllEvents")]
         public ActionResult<EventReadDTO> GetAllEvents()
         {
-            var _eventRepo = _repositoryManager.Events;
+            var _eventRepo = _repository.Events;
             List<Event> items = _eventRepo.GetAll();
 
             if (items != null)
@@ -53,6 +54,47 @@ namespace BeFriendServer.Controllers
             }
             else
                 return NotFound();
+        }
+
+
+        // POST api/event
+        [HttpPost]
+        public ActionResult<EventReadDTO> CreateEvent(EventCreateDTO eventCreateDto)
+        {
+            Event eventModel = _mapper.Map<Event>(eventCreateDto);
+            _repository.Events.CreateEvent(eventModel);
+            _repository.Save();
+            EventReadDTO eventReadDto = _mapper.Map<EventReadDTO>(eventModel);
+            return CreatedAtRoute(nameof(GetEventById), new { id = eventReadDto.EventId }, eventReadDto);
+        }
+
+        // DELETE api/event/{id}
+        [HttpDelete]
+        public ActionResult DeleteEvent(int id)
+        {
+            var eventFromRepo = _repository.Events.GetById(id,true);
+
+            if (eventFromRepo == null) return NotFound();
+
+            _repository.Events.DeleteEvent(eventFromRepo);
+            _repository.Save();
+            return NoContent();
+
+        }
+
+        //PUT api/event/{id}
+        [HttpPut("{id}")]
+        public ActionResult UpdateEvent(int id, EventUpdateDTO eventUpdateDto)
+        {
+            var eventFromRepo = _repository.Events.GetById(id, true);
+
+            if (eventFromRepo == null) return NotFound();
+
+            _mapper.Map(eventUpdateDto, eventFromRepo);
+            _repository.Events.UpdateEvent(eventFromRepo);
+            _repository.Save();
+
+            return NoContent();
         }
     }
 }

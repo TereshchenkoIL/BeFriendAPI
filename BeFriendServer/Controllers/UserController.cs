@@ -16,12 +16,12 @@ namespace BeFriendServer.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
         
         public UserController(IRepositoryManager manager, IMapper mapper)
         {
-            _repositoryManager = manager;
+            _repository = manager;
             _mapper = mapper;
         }
 
@@ -29,7 +29,7 @@ namespace BeFriendServer.Controllers
         [HttpGet("{num}", Name ="GetUserByNumber")]
         public ActionResult<UserReadDTO> GetUserByNumber(string num)
         {
-            var _userRepo = _repositoryManager.Users;
+            var _userRepo = _repository.Users;
             User user = _userRepo.GetByNumber(num);
 
             if (user != null)
@@ -43,7 +43,7 @@ namespace BeFriendServer.Controllers
         [HttpGet("all", Name = "GetAllUsers")]
         public ActionResult<UserReadDTO> GetAllUsers()
         {
-            var _userRepo = _repositoryManager.Users;
+            var _userRepo = _repository.Users;
            List<User> users = _userRepo.GetAllUsers();
 
             if (users != null)
@@ -54,14 +54,51 @@ namespace BeFriendServer.Controllers
                 return NotFound();
         }
 
+        // POST api/user/{num}
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] UserCreateDTO user)
+        {
+            if(user == null)
+            {
+                // ToDo Log this
+            }
+            var userEntity = _mapper.Map<User>(user);
+            _repository.Users.CreateUser(userEntity);
+            _repository.Save();
+
+            var userReadDto = _mapper.Map<UserReadDTO>(userEntity);
+
+            return CreatedAtRoute(nameof(GetUserByNumber), new { num = userReadDto.TelephoneNumber }, userReadDto);
+
+        }
+
+        // PUT api/user/{num}
+
+        [HttpPut("{num}")]
+        public IActionResult UpdateUser(string num,[FromBody] UserUpdateDTO userUpdateDto)
+        {
+            if (userUpdateDto == null)
+            {
+                // ToDo Log this
+            }
+            User userFromRepo = _repository.Users.GetByNumber(num,true);
+
+            if (userFromRepo == null) return NotFound();
+
+            _mapper.Map(userUpdateDto, userFromRepo);
+            _repository.Users.UpdateUser(userFromRepo);
+            _repository.Save();
+            return NoContent();
+           
+        }
         // ToDo Patch interesrt-User
         // PATCH api/user/{num}
         [HttpPatch("{num}")]
         public ActionResult PartialUserUpdate(string num, JsonPatchDocument<UserUpdateDTO> patchDoc)
         {
-            var _repo = _repositoryManager.Users;
+            var _repo = _repository.Users;
 
-            var userModelFromRepo = _repositoryManager.Users.GetByNumber(num, true) ;
+            var userModelFromRepo = _repository.Users.GetByNumber(num, true) ;
 
             if (userModelFromRepo == null) return NotFound();
 
@@ -80,7 +117,18 @@ namespace BeFriendServer.Controllers
             }
 
             _repo.UpdateUser(userModelFromRepo);
-            _repositoryManager.Save();
+            _repository.Save();
+            return NoContent();
+        }
+
+        // DELETE api/user/{num}
+        public ActionResult DeleteUser(string num)
+        {
+            User userFromRepo = _repository.Users.GetByNumber(num,true);
+            if (userFromRepo == null) return NotFound();
+
+            _repository.Users.DeleteUser(userFromRepo);
+            _repository.Save();
             return NoContent();
         }
 
