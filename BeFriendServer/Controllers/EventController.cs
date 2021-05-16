@@ -63,6 +63,12 @@ namespace BeFriendServer.Controllers
         {
             Event eventModel = _mapper.Map<Event>(eventCreateDto);
             _repository.Events.CreateEvent(eventModel);
+            List<InterestsEvent> interests = new List<InterestsEvent>();
+
+            foreach(var interest in eventCreateDto.Interests)
+            {
+                interests.Add(new InterestsEvent() { EventId = eventModel.EventId, InterestId = interest.InterestId});
+            }
             _repository.Save();
             EventReadDTO eventReadDto = _mapper.Map<EventReadDTO>(eventModel);
             return CreatedAtRoute(nameof(GetEventById), new { id = eventReadDto.EventId }, eventReadDto);
