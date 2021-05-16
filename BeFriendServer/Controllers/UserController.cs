@@ -62,7 +62,14 @@ namespace BeFriendServer.Controllers
             {
                 // ToDo Log this
             }
+            List<InterestsUser> interests = new List<InterestsUser>();
+
+            foreach(var interest in user.Interests)
+            {
+                interests.Add(new InterestsUser {TelephoneNumber = user.TelephoneNumber, InterestId = interest.InterestId });
+            }
             var userEntity = _mapper.Map<User>(user);
+            userEntity.InterestsUsers = interests;
             _repository.Users.CreateUser(userEntity);
             _repository.Save();
 
