@@ -249,14 +249,10 @@ namespace BeFriendServer.Data
 
                 entity.ToTable("organizers");
 
-                entity.HasIndex(e => e.EventId, "Event_Id_UNIQUE")
-                    .IsUnique();
+                entity.HasIndex(e => e.EventId, "FK_Org_Event");
+                
 
-                entity.HasIndex(e => e.TelephoneNumber, "Telephone_number_UNIQUE")
-                    .IsUnique();
-
-                entity.Property(e => e.EventId)
-                    .ValueGeneratedOnAdd()
+                entity.Property(e => e.EventId)               
                     .HasColumnName("Event_Id");
 
                 entity.Property(e => e.TelephoneNumber)
@@ -264,14 +260,14 @@ namespace BeFriendServer.Data
                     .HasColumnName("Telephone_number");
 
                 entity.HasOne(d => d.Event)
-                    .WithOne(p => p.Organizer)
-                    .HasForeignKey<Organizer>(d => d.EventId)
+                    .WithMany(p => p.Organizers)
+                    .HasForeignKey(d => d.EventId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ORG_EVENT");
 
                 entity.HasOne(d => d.TelephoneNumberNavigation)
-                    .WithOne(p => p.Organizer)
-                    .HasForeignKey<Organizer>(d => d.TelephoneNumber)
+                    .WithMany(p => p.Organizers)
+                    .HasForeignKey(d => d.TelephoneNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ORG_USER");
             });
