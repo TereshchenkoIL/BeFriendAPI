@@ -25,7 +25,7 @@ namespace BeFriendServer.Models
         public int PeopleCount { get; set; }
 
         [JsonIgnore]
-        public virtual Organizer Organizer { get; set; }
+        public virtual ICollection<Organizer> Organizers { get; set; }
         [JsonIgnore]
         public virtual ICollection<InterestsEvent> InterestsEvents { get; set; }
         [JsonIgnore]
