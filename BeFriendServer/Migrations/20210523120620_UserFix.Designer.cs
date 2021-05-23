@@ -3,14 +3,16 @@ using System;
 using BeFriendServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BeFriendServer.Migrations
 {
     [DbContext(typeof(befrienddbContext))]
-    partial class befrienddbContextModelSnapshot : ModelSnapshot
+    [Migration("20210523120620_UserFix")]
+    partial class UserFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,6 +328,9 @@ namespace BeFriendServer.Migrations
                         .HasMaxLength(45)
                         .HasColumnType("varchar(45)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<byte>("IsAdmin")
                         .HasColumnType("tinyint")
                         .HasColumnName("Is_Admin");
@@ -338,6 +343,12 @@ namespace BeFriendServer.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
+
+                    b.Property<int?>("OrganizerEventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrganizerTelephoneNumber")
                         .HasColumnType("varchar(45)");
 
                     b.Property<string>("Password")
@@ -358,6 +369,8 @@ namespace BeFriendServer.Migrations
 
                     b.HasKey("TelephoneNumber")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("OrganizerEventId", "OrganizerTelephoneNumber");
 
                     b.HasIndex(new[] { "TelephoneNumber" }, "Telephone_number_UNIQUE")
                         .IsUnique()
@@ -481,6 +494,15 @@ namespace BeFriendServer.Migrations
                         .IsRequired();
 
                     b.Navigation("TelephoneNumberNavigation");
+                });
+
+            modelBuilder.Entity("BeFriendServer.Models.User", b =>
+                {
+                    b.HasOne("BeFriendServer.Models.Organizer", "Organizer")
+                        .WithMany()
+                        .HasForeignKey("OrganizerEventId", "OrganizerTelephoneNumber");
+
+                    b.Navigation("Organizer");
                 });
 
             modelBuilder.Entity("BeFriendServer.Models.Chat", b =>

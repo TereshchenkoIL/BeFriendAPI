@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeFriendServer.DTOs.Interest;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BeFriendServer.Controllers
 {
@@ -19,11 +21,13 @@ namespace BeFriendServer.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-        
-        public UserController(IRepositoryManager manager, IMapper mapper)
+        IWebHostEnvironment _appEnvironment;
+
+        public UserController(IRepositoryManager manager, IMapper mapper, IWebHostEnvironment appEnvironment)
         {
             _repository = manager;
             _mapper = mapper;
+            _appEnvironment = appEnvironment;
         }
 
         // GET api/user/{num}
@@ -78,6 +82,14 @@ namespace BeFriendServer.Controllers
 
             return CreatedAtRoute(nameof(GetUserByNumber), new { num = userReadDto.TelephoneNumber }, userReadDto);
 
+        }
+
+        // POST api/user/photo/{num}
+        [HttpPost("photo/{num}")]
+        public IActionResult SetPhoto(string num, [FromBody] byte[] obj)
+        {
+         
+                return NoContent();
         }
 
 

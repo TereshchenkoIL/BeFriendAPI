@@ -354,7 +354,7 @@ namespace BeFriendServer.Data
 
                 entity.Property(e => e.IsAdmin).HasColumnName("Is_Admin");
 
-                entity.Property(e => e.Location).HasMaxLength(45);
+               
 
                 entity.Property(e => e.Login)
                     .IsRequired()

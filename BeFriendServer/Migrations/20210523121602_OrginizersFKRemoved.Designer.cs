@@ -3,14 +3,16 @@ using System;
 using BeFriendServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BeFriendServer.Migrations
 {
     [DbContext(typeof(befrienddbContext))]
-    partial class befrienddbContextModelSnapshot : ModelSnapshot
+    [Migration("20210523121602_OrginizersFKRemoved")]
+    partial class OrginizersFKRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

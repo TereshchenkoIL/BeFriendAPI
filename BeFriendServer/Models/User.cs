@@ -23,7 +23,7 @@ namespace BeFriendServer.Models
         public DateTime Birthday { get; set; }
         public byte Sex { get; set; }
         public string Country { get; set; }
-        public string Location { get; set; }
+        public string City { get; set; }
         public string Email { get; set; }
         public int? CommunicationsCount { get; set; }
         public byte IsAdmin { get; set; }
@@ -32,8 +32,7 @@ namespace BeFriendServer.Models
         public virtual Message Message { get; set; }
         [JsonIgnore]
         public virtual Notification Notification { get; set; }
-        [JsonIgnore]
-        public virtual Organizer Organizer { get; set; }
+
         [JsonIgnore]
         public virtual Payment Payment { get; set; }
         [JsonIgnore]

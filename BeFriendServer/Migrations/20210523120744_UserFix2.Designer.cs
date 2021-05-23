@@ -3,14 +3,16 @@ using System;
 using BeFriendServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BeFriendServer.Migrations
 {
     [DbContext(typeof(befrienddbContext))]
-    partial class befrienddbContextModelSnapshot : ModelSnapshot
+    [Migration("20210523120744_UserFix2")]
+    partial class UserFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -340,6 +342,12 @@ namespace BeFriendServer.Migrations
                         .HasMaxLength(45)
                         .HasColumnType("varchar(45)");
 
+                    b.Property<int?>("OrganizerEventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrganizerTelephoneNumber")
+                        .HasColumnType("varchar(45)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(45)
@@ -358,6 +366,8 @@ namespace BeFriendServer.Migrations
 
                     b.HasKey("TelephoneNumber")
                         .HasName("PRIMARY");
+
+                    b.HasIndex("OrganizerEventId", "OrganizerTelephoneNumber");
 
                     b.HasIndex(new[] { "TelephoneNumber" }, "Telephone_number_UNIQUE")
                         .IsUnique()
@@ -481,6 +491,15 @@ namespace BeFriendServer.Migrations
                         .IsRequired();
 
                     b.Navigation("TelephoneNumberNavigation");
+                });
+
+            modelBuilder.Entity("BeFriendServer.Models.User", b =>
+                {
+                    b.HasOne("BeFriendServer.Models.Organizer", "Organizer")
+                        .WithMany()
+                        .HasForeignKey("OrganizerEventId", "OrganizerTelephoneNumber");
+
+                    b.Navigation("Organizer");
                 });
 
             modelBuilder.Entity("BeFriendServer.Models.Chat", b =>
