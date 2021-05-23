@@ -15,8 +15,8 @@ namespace BeFriendServer.DTOs.User
         public string Surname { get; set; }
         public DateTime Birthday { get; set; }
         public byte Sex { get; set; }
+        public string City { get; set; }
         public string Country { get; set; }
-        public string Location { get; set; }
         public string Email { get; set; }
         public int? CommunicationsCount { get; set; }
 

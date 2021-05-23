@@ -72,9 +72,7 @@ namespace BeFriendServer.Data
                     .HasMaxLength(45)
                     .HasColumnName("Event_date");
 
-                entity.Property(e => e.Location)
-                    .IsRequired()
-                    .HasMaxLength(150);
+              
 
                 entity.Property(e => e.Name)
                     .IsRequired()
