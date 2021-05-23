@@ -368,7 +368,7 @@ namespace BeFriendServer.Data
                     .IsRequired()
                     .HasMaxLength(45);
 
-                entity.Property(e => e.Photo).HasMaxLength(45);
+                entity.Property(e => e.Photo);
 
                 entity.Property(e => e.Surname).HasMaxLength(45);
             });

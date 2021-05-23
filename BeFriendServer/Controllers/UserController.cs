@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using BeFriendServer.DTOs.Interest;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Http;
 
 namespace BeFriendServer.Controllers
 {
@@ -63,6 +65,7 @@ namespace BeFriendServer.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserCreateDTO user)
         {
+
             if(user == null)
             {
                 // ToDo Log this
@@ -86,10 +89,29 @@ namespace BeFriendServer.Controllers
 
         // POST api/user/photo/{num}
         [HttpPost("photo/{num}")]
-        public IActionResult SetPhoto(string num, [FromBody] byte[] obj)
+        public async Task<IActionResult> SetPhoto(string num )
         {
-         
-                return NoContent();
+            User user = _repository.Users.GetByNumber(num, true);
+
+            if (user == null) return NoContent();
+            string oldFile = Path.Combine(_appEnvironment.ContentRootPath, _appEnvironment.WebRootPath, "images/" + user.Photo);
+
+            if (System.IO.File.Exists(oldFile))
+            {
+                System.IO.File.Delete(oldFile);
+            }
+
+            var file = Request.Form.Files[0]; 
+            string fName = user.Login + "_" + Guid.NewGuid() + Path.GetExtension(file.FileName);
+            user.Photo = fName;
+            string path = Path.Combine(_appEnvironment.ContentRootPath, _appEnvironment.WebRootPath, "images/" + fName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            _repository.Save();
+            return NoContent();
         }
 
 
