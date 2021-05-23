@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BeFriendServer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,5 +18,6 @@ namespace BeFriendServer.DTOs.Event
         public string EventDate { get; set; }
         public int PeopleCount { get; set; }
         public List<Models.Interest> Interests { get; set; }
+        public List<Organizer> Organizers { get; set; }
     }
 }

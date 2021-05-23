@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BeFriendServer.DTOs.Interest;
 
 namespace BeFriendServer.Controllers
 {
@@ -54,7 +55,7 @@ namespace BeFriendServer.Controllers
                 return NotFound();
         }
 
-        // POST api/user/{num}
+        // POST api/user
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserCreateDTO user)
         {
@@ -77,6 +78,53 @@ namespace BeFriendServer.Controllers
 
             return CreatedAtRoute(nameof(GetUserByNumber), new { num = userReadDto.TelephoneNumber }, userReadDto);
 
+        }
+
+
+        // POST api/user/addInterests/{num}
+        [HttpPost("addInterests/{num}")]
+        public IActionResult AddInterests(string num, [FromBody] List<InterestDTO> interests)
+        {
+            User user = _repository.Users.GetByNumber(num, true);
+            if (user == null) return NotFound();
+
+            List<Interest> newInterest = _mapper.Map<List<Interest>>(interests);
+
+            _repository.Users.AddInterests(user, newInterest);
+            _repository.Save();
+            return NoContent();
+        }
+
+
+        // POST api/user/addInterests/{num}
+        [HttpPost("Interests/{num}")]
+        public IActionResult AddInterest(string num, [FromBody] InterestDTO interest)
+        {
+            User user = _repository.Users.GetByNumber(num, true);
+            if (user == null) return NotFound();
+
+            Interest newInterest = _mapper.Map<Interest>(interest);
+
+            _repository.Users.AddInterest(user, newInterest);
+            _repository.Save();
+            return NoContent();
+        }
+
+        // DELETE api/user/Interests/{num}
+        [HttpDelete("Interests/{num}")]
+        public IActionResult RemoveInterest(string num, [FromBody] InterestDTO interestDto)
+        {
+
+            User user = _repository.Users.GetByNumber(num, true);
+            if (user == null) return NotFound();
+            InterestsUser iu = user.InterestsUsers.Where(x => x.InterestId == interestDto.InterestId).FirstOrDefault();
+
+            if (iu == null) return NotFound();
+
+            user.InterestsUsers.Remove(iu);
+            _repository.Save();
+            return NoContent();
+            
         }
 
         // PUT api/user/{num}
@@ -129,6 +177,7 @@ namespace BeFriendServer.Controllers
         }
 
         // DELETE api/user/{num}
+        [HttpDelete("{num}")]
         public ActionResult DeleteUser(string num)
         {
             User userFromRepo = _repository.Users.GetByNumber(num,true);

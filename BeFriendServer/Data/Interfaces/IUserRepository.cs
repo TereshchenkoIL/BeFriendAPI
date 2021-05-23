@@ -13,6 +13,8 @@ namespace BeFriendServer.Data.Interfaces
         void CreateUser(User user);
         void DeleteUser(User user);
         void UpdateUser(User user);
+        public void AddInterests(User user, List<Interest> interests);
+        public void AddInterest(User user, Interest interest);
 
     }
 }

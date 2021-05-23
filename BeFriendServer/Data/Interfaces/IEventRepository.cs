@@ -13,5 +13,9 @@ namespace BeFriendServer.Data.Interfaces
         void CreateEvent(Event e);
         void DeleteEvent(Event e);
         void UpdateEvent(Event e);
+        public void AddInterests(Event e, List<Interest> interests);
+        public void AddInterest(Event e, Interest interest);
+
+        public void AddOrginizer(Event e, string num);
     }
 }

@@ -40,5 +40,36 @@ namespace BeFriendServer.Data
         {
             Update(user);
         }
+
+
+        public void AddInterests(User user, List<Interest> interests)
+        {
+            if (user.InterestsUsers == null) user.InterestsUsers = new List<InterestsUser>();
+
+            foreach (var interest in interests)
+            {
+                if(user.InterestsUsers.Where(x => x.InterestId == interest.InterestId).FirstOrDefault() == null)
+                {
+                    user.InterestsUsers.Add(new InterestsUser
+                    {
+                        InterestId = interest.InterestId,
+                        TelephoneNumber = user.TelephoneNumber
+                    }) ;
+                }
+            }
+        }
+        public void AddInterest(User user, Interest interest)
+        {
+            if (user.InterestsUsers == null) user.InterestsUsers = new List<InterestsUser>();
+
+                if (user.InterestsUsers.Where(x => x.InterestId == interest.InterestId).FirstOrDefault() == null)
+                {
+                    user.InterestsUsers.Add(new InterestsUser
+                    {
+                        InterestId = interest.InterestId,
+                        TelephoneNumber = user.TelephoneNumber
+                    });
+            }
+        }
     }
 }
