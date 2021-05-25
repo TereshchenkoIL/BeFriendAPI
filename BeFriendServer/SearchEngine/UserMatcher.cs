@@ -62,7 +62,7 @@ namespace BeFriendServer.SearchEngine
             int age = DateTime.Now.Year - client.Birthday.Year;
 
             List<User> users = _repository.Users.GetAllUsers().Where(x => (x.Country == options.Country || options.Country == "All") &&
-            (x.City == options.City || options.City == "All") && (options.MinAge <= age && age <= options.MaxAge)).ToList();
+            (x.City == options.City || options.City == "All") && (options.MinAge <= age && age <= options.MaxAge) && x.TelephoneNumber != client.TelephoneNumber).ToList();
             if (options.Interests == null)
             {
                 foreach (var user in users)
@@ -89,7 +89,7 @@ namespace BeFriendServer.SearchEngine
         {
             List<UserSearchResult> results = new List<UserSearchResult>();
 
-            foreach (var user in _repository.Users.GetAllUsers())
+            foreach (var user in _repository.Users.GetAllUsers().Where(x => x.TelephoneNumber != client.TelephoneNumber))
             {
                 results.Add(Calculate(client, user));
             }

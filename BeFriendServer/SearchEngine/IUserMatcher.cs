@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BeFriendServer.SearchEngine
 {
-    interface IUserMatcher
+    public interface IUserMatcher
     {
         List<UserSearchResult> Match(User client, UserSearchOptions options);
         List<UserSearchResult> GetRecommendation(User user);

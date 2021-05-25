@@ -14,6 +14,8 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Http;
+using BeFriendServer.SearchEngine;
+using BeFriendServer.SearchEngine.Options;
 
 namespace BeFriendServer.Controllers
 {
@@ -23,13 +25,15 @@ namespace BeFriendServer.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
-        IWebHostEnvironment _appEnvironment;
+        private readonly IUserMatcher _matcher;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public UserController(IRepositoryManager manager, IMapper mapper, IWebHostEnvironment appEnvironment)
+        public UserController(IRepositoryManager manager, IMapper mapper, IWebHostEnvironment appEnvironment, IUserMatcher matcher)
         {
             _repository = manager;
             _mapper = mapper;
             _appEnvironment = appEnvironment;
+            _matcher = matcher;
         }
 
         // GET api/user/{num}
@@ -59,6 +63,29 @@ namespace BeFriendServer.Controllers
             }
             else
                 return NotFound();
+        }
+
+
+        // GET api/user/recommendation/{num}
+        [HttpGet("recommendation/{num}")]
+        public IActionResult GetRecommendation(string num)
+        {
+            User user = _repository.Users.GetByNumber(num);
+            if (user == null) return NotFound();
+
+            var results = _matcher.GetRecommendation(user);
+            return Ok(results);
+        }
+
+        // GET api/user/search/{num}
+        [HttpGet("search/{num}")]
+        public IActionResult SearchPotentials(string num, [FromBody] UserSearchOptions options)
+        {
+            User user = _repository.Users.GetByNumber(num);
+            if (user == null) return NotFound();
+
+            var results = _matcher.Match(user,options);
+            return Ok(results);
         }
 
         // POST api/user
@@ -93,7 +120,7 @@ namespace BeFriendServer.Controllers
         {
             User user = _repository.Users.GetByNumber(num, true);
 
-            if (user == null) return NoContent();
+            if (user == null) return NotFound();
             string oldFile = Path.Combine(_appEnvironment.ContentRootPath, _appEnvironment.WebRootPath, "images/" + user.Photo);
 
             if (System.IO.File.Exists(oldFile))

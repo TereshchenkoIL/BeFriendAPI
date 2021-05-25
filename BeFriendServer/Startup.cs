@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
+using BeFriendServer.SearchEngine;
 
 namespace BeFriendServer
 {
@@ -40,6 +41,8 @@ namespace BeFriendServer
                 // options.UseMySQL(Configuration.GetConnectionString("DenisConnection"));
             });
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddScoped<IUserMatcher, UserMatcher>();
+            services.AddScoped<IEventMatcher, EventMatcher>();
             services.AddMvc().AddNewtonsoftJson(s =>
                  s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
              );

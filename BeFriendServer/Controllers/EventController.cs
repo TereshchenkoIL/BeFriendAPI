@@ -4,11 +4,15 @@ using BeFriendServer.DTOs.Event;
 using BeFriendServer.DTOs.Interest;
 using BeFriendServer.DTOs.User;
 using BeFriendServer.Models;
+using BeFriendServer.SearchEngine;
+using BeFriendServer.SearchEngine.Options;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,11 +24,15 @@ namespace BeFriendServer.Controllers
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
+        private readonly IEventMatcher _matcher;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public EventController(IRepositoryManager manager, IMapper mapper)
+        public EventController(IRepositoryManager manager, IMapper mapper, IEventMatcher matcher, IWebHostEnvironment appEnvironment)
         {
             _repository = manager;
             _mapper = mapper;
+            _matcher = matcher;
+            _appEnvironment = appEnvironment;
         }
 
 
@@ -58,6 +66,54 @@ namespace BeFriendServer.Controllers
                 return NotFound();
         }
 
+        // GET api/event/recommendation/{num}
+        [HttpGet("recommendation/{num}")]
+        public IActionResult GetRecommendation(string num)
+        {
+            User user = _repository.Users.GetByNumber(num);
+            if (user == null) return NotFound();
+
+            var results = _matcher.getRecommendation(user);
+            return Ok(results);
+        }
+
+        // GET api/event/search/{num}
+        [HttpGet("search/{num}")]
+        public IActionResult GetPotentials(string num, [FromBody] EventSearchOptions options)
+        {
+            User user = _repository.Users.GetByNumber(num);
+            if (user == null) return NotFound();
+
+            var results = _matcher.Match(options, user);
+            return Ok(results);
+        }
+
+        // POST api/event/photo/{id}
+        [HttpPost("photo/{num}")]
+        public async Task<IActionResult> SetPhoto(int id)
+        {
+            Event eventModel = _repository.Events.GetById(id,true);
+
+            if (eventModel == null) return NotFound();
+            string oldFile = Path.Combine(_appEnvironment.ContentRootPath, _appEnvironment.WebRootPath, "images/" + eventModel.Photo);
+
+            if (System.IO.File.Exists(oldFile))
+            {
+                System.IO.File.Delete(oldFile);
+            }
+
+            var file = Request.Form.Files[0];
+            string fName =eventModel.Name + "_" + Guid.NewGuid() + Path.GetExtension(file.FileName);
+            eventModel.Photo = fName;
+            string path = Path.Combine(_appEnvironment.ContentRootPath, _appEnvironment.WebRootPath, "images/" + fName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            _repository.Save();
+            return NoContent();
+        }
 
         // POST api/event
         [HttpPost]
