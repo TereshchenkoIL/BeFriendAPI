@@ -65,6 +65,15 @@ namespace BeFriendServer.Controllers
                 return NotFound();
         }
 
+        // GET api/user/login/{log}
+        [HttpGet("login/{log}")]
+        public IActionResult FindByLog(string log)
+        {
+            var res = _repository.Users.GetAllUsers().Where(x => x.Login.ToLower().Contains(log.ToLower())).ToList() ;
+            if (res == null) return NotFound();
+            return Ok(_mapper.Map<List<UserReadDTO>>(res));
+        }
+
 
         // GET api/user/recommendation/{num}
         [HttpGet("recommendation/{num}")]
@@ -77,8 +86,8 @@ namespace BeFriendServer.Controllers
             return Ok(results);
         }
 
-        // GET api/user/search/{num}
-        [HttpGet("search/{num}")]
+        // POST api/user/search/{num}
+        [HttpPost("search/{num}")]
         public IActionResult SearchPotentials(string num, [FromBody] UserSearchOptions options)
         {
             User user = _repository.Users.GetByNumber(num);
@@ -98,6 +107,7 @@ namespace BeFriendServer.Controllers
                 // ToDo Log this
             }
             List<InterestsUser> interests = new List<InterestsUser>();
+          
 
             foreach(var interest in user.Interests)
             {

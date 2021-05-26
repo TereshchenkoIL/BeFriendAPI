@@ -11,6 +11,7 @@ namespace BeFriendServer.DTOs.Event
         public int EventId { get; set; }
         public string Name { get; set; }
         public int AgeLimit { get; set; }
+        public int AgeMin { get; set; }
         public string Description { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

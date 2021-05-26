@@ -21,7 +21,7 @@ namespace BeFriendServer.Models
         public string Photo { get; set; }
         public string Surname { get; set; }
         public DateTime Birthday { get; set; }
-        public byte Sex { get; set; }
+        public string Sex { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
         public string Email { get; set; }

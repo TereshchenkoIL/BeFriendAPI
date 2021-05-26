@@ -70,7 +70,7 @@ namespace BeFriendServer.SearchEngine
             int age = DateTime.Now.Year - client.Birthday.Year;
 
             List<Event> events = _repository.Events.GetAll().Where(x => (x.Country == options.Country || options.Country == "All") &&
-            (x.City == options.City || options.City == "All") && (options.MinAge <= age && age <= options.MaxAge)).ToList();
+            (x.City == options.City || options.City == "Всі") ).ToList();
             if (options.Interests == null)
             {
                 foreach (var e in events)

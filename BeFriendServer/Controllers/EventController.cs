@@ -77,8 +77,8 @@ namespace BeFriendServer.Controllers
             return Ok(results);
         }
 
-        // GET api/event/search/{num}
-        [HttpGet("search/{num}")]
+        // Post api/event/search/{num}
+        [HttpPost("search/{num}")]
         public IActionResult GetPotentials(string num, [FromBody] EventSearchOptions options)
         {
             User user = _repository.Users.GetByNumber(num);
@@ -87,6 +87,18 @@ namespace BeFriendServer.Controllers
             var results = _matcher.Match(options, user);
             return Ok(results);
         }
+        
+
+        // GET api/event/byName/{name}
+        [HttpGet("byName/{name}")]
+        public IActionResult GetByNames(string name)
+        {
+            var results = _repository.Events.GetAll().Where(x => x.Name.ToLower().Contains(name.ToLower()));
+            if (results == null) return NotFound();
+
+            return Ok(_mapper.Map<List<EventReadDTO>>(results));
+        }
+
 
         // POST api/event/photo/{id}
         [HttpPost("photo/{num}")]
@@ -130,6 +142,13 @@ namespace BeFriendServer.Controllers
             }
             eventModel.InterestsEvents = interests;
             _repository.Save();
+            eventModel.Organizers = new List<Organizer>();
+            foreach (var org in eventCreateDto.Organizers)
+            {
+                eventModel.Organizers.Add(new Organizer { EventId = eventModel.EventId,
+                TelephoneNumber = org.TelephoneNumber});
+            }
+
             EventReadDTO eventReadDto = _mapper.Map<EventReadDTO>(eventModel);
             return CreatedAtRoute(nameof(GetEventById), new { id = eventReadDto.EventId }, eventReadDto);
         }
