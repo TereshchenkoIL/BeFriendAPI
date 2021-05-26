@@ -13,7 +13,7 @@ namespace BeFriendServer.DTOs.User
         public string Name { get; set; }
         public string Photo { get; set; }
         public string Surname { get; set; }
-        public DateTime Birthday { get; set; }
+        public int Age { get; set; }
         public string Sex { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

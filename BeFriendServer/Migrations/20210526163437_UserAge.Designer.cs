@@ -3,14 +3,16 @@ using System;
 using BeFriendServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BeFriendServer.Migrations
 {
     [DbContext(typeof(befrienddbContext))]
-    partial class befrienddbContextModelSnapshot : ModelSnapshot
+    [Migration("20210526163437_UserAge")]
+    partial class UserAge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +63,7 @@ namespace BeFriendServer.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<string>("EventDate")
+                        .IsRequired()
                         .HasMaxLength(45)
                         .HasColumnType("varchar(45)")
                         .HasColumnName("Event_date");
@@ -75,6 +78,7 @@ namespace BeFriendServer.Migrations
                         .HasColumnName("People_count");
 
                     b.Property<string>("Photo")
+                        .IsRequired()
                         .HasMaxLength(45)
                         .HasColumnType("varchar(45)");
 

@@ -59,7 +59,7 @@ namespace BeFriendServer.SearchEngine
         public List<UserSearchResult> Match(User client, UserSearchOptions options)
         {
             List<UserSearchResult> results = new List<UserSearchResult>();
-            int age = DateTime.Now.Year - client.Birthday.Year;
+            int age = client.Age;
 
             List<User> users = _repository.Users.GetAllUsers().Where(x => (x.Country == options.Country || options.Country == "all") &&
             (x.City == options.City || options.City == "Всі") && (options.MinAge <= age && age <= options.MaxAge) && x.TelephoneNumber != client.TelephoneNumber

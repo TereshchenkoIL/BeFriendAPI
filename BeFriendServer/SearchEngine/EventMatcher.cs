@@ -67,7 +67,7 @@ namespace BeFriendServer.SearchEngine
         public List<EventSearchResult> Match(EventSearchOptions options, User client)
         {
             List<EventSearchResult> results = new List<EventSearchResult>();
-            int age = DateTime.Now.Year - client.Birthday.Year;
+            int age = client.Age;
 
             List<Event> events = _repository.Events.GetAll().Where(x => (x.Country == options.Country || options.Country == "All") &&
             (x.City == options.City || options.City == "Всі") ).ToList();

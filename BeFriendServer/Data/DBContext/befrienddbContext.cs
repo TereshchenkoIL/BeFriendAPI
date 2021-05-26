@@ -69,8 +69,7 @@ namespace BeFriendServer.Data
 
                 entity.Property(e => e.Description).HasMaxLength(150);
 
-                entity.Property(e => e.EventDate)
-                    .IsRequired()
+                entity.Property(e => e.EventDate)               
                     .HasMaxLength(45)
                     .HasColumnName("Event_date");
 
@@ -83,7 +82,6 @@ namespace BeFriendServer.Data
                 entity.Property(e => e.PeopleCount).HasColumnName("People_count");
 
                 entity.Property(e => e.Photo)
-                    .IsRequired()
                     .HasMaxLength(45);
 
                 entity.Property(e => e.SeatsLimit).HasColumnName("Seats_limit");
@@ -342,7 +340,7 @@ namespace BeFriendServer.Data
                     .HasMaxLength(12)
                     .HasColumnName("Telephone_number");
 
-                entity.Property(e => e.Birthday).HasColumnType("date");
+               
 
                 entity.Property(e => e.CommunicationsCount).HasColumnName("Communications_count");
 
