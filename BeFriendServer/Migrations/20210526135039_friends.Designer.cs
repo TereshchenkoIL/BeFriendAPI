@@ -3,14 +3,16 @@ using System;
 using BeFriendServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BeFriendServer.Migrations
 {
     [DbContext(typeof(befrienddbContext))]
-    partial class befrienddbContextModelSnapshot : ModelSnapshot
+    [Migration("20210526135039_friends")]
+    partial class friends
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +102,7 @@ namespace BeFriendServer.Migrations
                     b.Property<string>("SecondNumber")
                         .HasColumnType("varchar(12)");
 
-                    b.HasKey("FirstNumber", "SecondNumber")
-                        .HasName("PRIMARY");
+                    b.HasKey("FirstNumber");
 
                     b.HasIndex("SecondNumber");
 
@@ -320,25 +321,6 @@ namespace BeFriendServer.Migrations
                     b.ToTable("payments");
                 });
 
-            modelBuilder.Entity("BeFriendServer.Models.Socials", b =>
-                {
-                    b.Property<string>("Social")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<string>("Telephone_number")
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("text");
-
-                    b.HasKey("Social", "Telephone_number")
-                        .HasName("PRIMARY");
-
-                    b.HasIndex("Telephone_number");
-
-                    b.ToTable("Socials");
-                });
-
             modelBuilder.Entity("BeFriendServer.Models.User", b =>
                 {
                     b.Property<string>("TelephoneNumber")
@@ -414,9 +396,7 @@ namespace BeFriendServer.Migrations
 
                     b.HasOne("BeFriendServer.Models.User", "Friend")
                         .WithMany()
-                        .HasForeignKey("SecondNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SecondNumber");
 
                     b.Navigation("Friend");
 
@@ -540,17 +520,6 @@ namespace BeFriendServer.Migrations
                     b.Navigation("TelephoneNumberNavigation");
                 });
 
-            modelBuilder.Entity("BeFriendServer.Models.Socials", b =>
-                {
-                    b.HasOne("BeFriendServer.Models.User", "User")
-                        .WithMany("Socials")
-                        .HasForeignKey("Telephone_number")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("BeFriendServer.Models.Chat", b =>
                 {
                     b.Navigation("Message");
@@ -587,8 +556,6 @@ namespace BeFriendServer.Migrations
                     b.Navigation("Participants");
 
                     b.Navigation("Payment");
-
-                    b.Navigation("Socials");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,6 +15,8 @@ namespace BeFriendServer.Data
         INotificationRepository Notifications { get; }
         IPaymentRepository Payments { get; }
         IUserRepository Users { get; }
+        IFriendsRepository Friends { get; }
+        ISocialsRepository Socials { get; }
         void Save();
     }
 }

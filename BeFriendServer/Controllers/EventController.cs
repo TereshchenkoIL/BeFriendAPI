@@ -141,13 +141,17 @@ namespace BeFriendServer.Controllers
                 interests.Add(new InterestsEvent() { EventId = eventModel.EventId, InterestId = interest.InterestId});
             }
             eventModel.InterestsEvents = interests;
-            _repository.Save();
             eventModel.Organizers = new List<Organizer>();
             foreach (var org in eventCreateDto.Organizers)
             {
-                eventModel.Organizers.Add(new Organizer { EventId = eventModel.EventId,
-                TelephoneNumber = org.TelephoneNumber});
+                eventModel.Organizers.Add(new Organizer
+                {
+                    EventId = eventModel.EventId,
+                    TelephoneNumber = org.TelephoneNumber
+                });
             }
+            _repository.Save();
+            
 
             EventReadDTO eventReadDto = _mapper.Map<EventReadDTO>(eventModel);
             return CreatedAtRoute(nameof(GetEventById), new { id = eventReadDto.EventId }, eventReadDto);

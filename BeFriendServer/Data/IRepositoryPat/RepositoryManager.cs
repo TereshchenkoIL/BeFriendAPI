@@ -1,4 +1,5 @@
 ﻿using BeFriendServer.Data.Interfaces;
+using BeFriendServer.Data.IRepositoryPat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,21 @@ namespace BeFriendServer.Data
         private INotificationRepository _notificationRepository;
         private IPaymentRepository _paymentRepository;
         private IUserRepository _userRepository;
+        public IFriendsRepository _friendsRepository;
+        public ISocialsRepository _socialsRepository;
         public RepositoryManager(befrienddbContext context)
         {
             _dbcontext = context;
+        }
+        public IFriendsRepository Friends
+        {
+            get
+            {
+
+                if (_friendsRepository == null)
+                    _friendsRepository = new FriendsRepository(_dbcontext);
+                return _friendsRepository;
+            }
         }
         public IChatRepository Chats
         {
@@ -90,6 +103,17 @@ namespace BeFriendServer.Data
                 if (_userRepository == null)
                     _userRepository = new UserRepository(_dbcontext);
                 return _userRepository;
+            }
+        }
+
+        public ISocialsRepository Socials
+        {
+            get
+            {
+
+                if (_socialsRepository == null)
+                    _socialsRepository = new SocialsRepository(_dbcontext);
+                return _socialsRepository;
             }
         }
         public void Save()

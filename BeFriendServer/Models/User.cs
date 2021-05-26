@@ -41,5 +41,10 @@ namespace BeFriendServer.Models
         public virtual ICollection<Participant> Participants { get; set; }
         [JsonIgnore]
         public virtual ICollection<Organizer> Organizers { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Friends> Friends { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Socials> Socials { get; set; }
     }
 }

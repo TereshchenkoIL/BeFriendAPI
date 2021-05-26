@@ -29,6 +29,8 @@ namespace BeFriendServer.Data
         public virtual DbSet<Participant> Participants { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Friends> Friends { get; set; }
+        public virtual DbSet<Socials> Socials { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -369,9 +371,22 @@ namespace BeFriendServer.Data
                 entity.Property(e => e.Photo);
 
                 entity.Property(e => e.Surname).HasMaxLength(45);
-            });
 
+            });
+            modelBuilder.Entity<User>().HasMany(x => x.Friends)
+                .WithOne(x => x.User).IsRequired()
+                .HasForeignKey(x => x.FirstNumber).OnDelete(DeleteBehavior.Cascade);
             OnModelCreatingPartial(modelBuilder);
+
+            modelBuilder.Entity<Friends>(entity =>
+            entity.HasKey(e => new { e.FirstNumber, e.SecondNumber })
+                    .HasName("PRIMARY")
+            );
+
+            modelBuilder.Entity<Socials>(entity =>
+            entity.HasKey(e => new { e.Social, e.Telephone_number })
+                    .HasName("PRIMARY")
+            );
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

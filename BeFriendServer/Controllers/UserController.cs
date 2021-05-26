@@ -74,6 +74,47 @@ namespace BeFriendServer.Controllers
             return Ok(_mapper.Map<List<UserReadDTO>>(res));
         }
 
+        // POST api/user/socials/{num}
+        [HttpPost("socials/{num}")]
+        public IActionResult AddSocials(string num, [FromBody] Socials socials)
+        {
+            User user = _repository.Users.GetByNumber(num, false);
+
+            if (user == null) return NotFound();
+
+            _repository.Socials.AddSocials(socials);
+            _repository.Save();
+            return Ok(NoContent());
+
+
+        }
+        // GET api/user/socials/{num}
+        [HttpGet("socials/{num}")]
+        public IActionResult GetSocials(string num)
+        {
+            User user = _repository.Users.GetByNumber(num, false);
+
+            if (user == null) return NotFound();
+
+            var res = _repository.Socials.GetSocials(num,false);
+            if (res == null) return NotFound();
+
+            return Ok(res);
+
+        }
+
+        // GET api/user/byToken/{token}
+        [HttpGet("byToken/{token}")]
+        public IActionResult GetBytoken(string token)
+        {
+            var res = _repository.Socials.GetAll(false).Where(x => x.Token == token).FirstOrDefault();
+
+            if (res == null) return NotFound();
+
+            return Ok(_repository.Users.GetByNumber(res.Telephone_number));
+
+        }
+
 
         // GET api/user/recommendation/{num}
         [HttpGet("recommendation/{num}")]
