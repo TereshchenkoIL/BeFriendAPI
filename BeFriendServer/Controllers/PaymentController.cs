@@ -69,6 +69,7 @@ namespace BeFriendServer.Controllers
         }
 
         // DELETE api/payment/{id}
+        [HttpDelete("{id}")]
         public IActionResult DeletePayment(int id)
         {
             Payment payment = _repository.Payments.GetById(id, true);

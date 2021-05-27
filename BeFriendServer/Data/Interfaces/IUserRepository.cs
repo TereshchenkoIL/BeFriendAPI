@@ -9,6 +9,7 @@ namespace BeFriendServer.Data.Interfaces
     public interface IUserRepository
     {
         User GetByNumber(string num, bool tracked = false);
+        User GetByLogIn(string num, bool tracked = false);
         List<User> GetAllUsers(bool tracked = false);
         void CreateUser(User user);
         void DeleteUser(User user);

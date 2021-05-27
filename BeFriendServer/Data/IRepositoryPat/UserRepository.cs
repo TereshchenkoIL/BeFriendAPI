@@ -71,5 +71,10 @@ namespace BeFriendServer.Data
                     });
             }
         }
+
+        public User GetByLogIn(string num, bool tracked = false)
+        {
+            return FindByCondition(x => x.Login.Equals(num), tracked).Include(x => x.InterestsUsers).ThenInclude(x => x.Interest).FirstOrDefault();
+        }
     }
 }

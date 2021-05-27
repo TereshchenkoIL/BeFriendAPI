@@ -50,6 +50,21 @@ namespace BeFriendServer.Controllers
             else
                 return NotFound();
         }
+
+        // GET api/user/byLogin/{log}
+        [HttpGet("byLogin/{log}")]
+        public ActionResult<UserReadDTO> GetUserByLogIn(string log)
+        {
+            var _userRepo = _repository.Users;
+            User user = _userRepo.GetByLogIn(log,false);
+
+            if (user != null)
+            {
+                return Ok(_mapper.Map<UserReadDTO>(user));
+            }
+            else
+                return NotFound();
+        }
         // GET api/user/all
         [HttpGet("all", Name = "GetAllUsers")]
         public ActionResult<UserReadDTO> GetAllUsers()
