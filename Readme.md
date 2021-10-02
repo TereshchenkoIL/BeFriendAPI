@@ -1,19 +1,4 @@
 BeFriend
-
-Сучасні соціальні мережі надають можливість спілкуватися зі знайомими чи
-слідкувати за цікавими людьми, але не надають можливості шукати людей,
-інтереси яких були б схожими з вашими. Наш сервіс надає можливість
-шукати нових друзів та перевіряти наскільки схожі інтереси у вас з
-вашими знайомими.
-
-Долучитися до роботи
-
-Детально про можливості нашого додатку можна дізнатися на сайті
-
-httplocalhost63343BeFriend\_landing-masterBeFriend\_landing-masterindex.html\_ijt=k7l607mas0lg9eq0o058rruil1
-
-Завантажити додаток можна за посиланням
-
-Попередні умови
-
-Не потребує установки додаткового ПЗ
+Description: University team project which is a simple social network API for the mobile client. It allows users to find activities according to their interests. 
+Languages: C#
+Tech-stack: ASP.NET Core Web API, Entity Framework Core, Repository Pattern.
